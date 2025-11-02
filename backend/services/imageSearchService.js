@@ -7,8 +7,8 @@ const fs = require('fs');
 const path = require('path');
 
 const IMAGE_DIRECTORIES = {
-  'landing page': '/Users/kathy/image-generation-pipeline/frontend/public/TrainingImages/LandingPage',
-  'interior design': '/Users/kathy/image-generation-pipeline/frontend/public/TrainingImages/InteriorDesign'
+  'landing page': path.join(__dirname, '../TrainingImages/LandingPage'),
+  'interior design': path.join(__dirname, '../TrainingImages/InteriorDesign')
 };
 
 const IMAGE_STYLES = {
@@ -21,13 +21,13 @@ const IMAGE_STYLES = {
  */
 const detectPromptType = (prompt) => {
   const lowerPrompt = prompt.toLowerCase();
-  
+
   if (lowerPrompt.includes('landing page')) {
     return 'landing page';
   } else if (lowerPrompt.includes('interior design')) {
     return 'interior design';
   }
-  
+
   // Default to 'landing page' if no match
   return 'landing page';
 };
@@ -43,7 +43,7 @@ const getImageFiles = (directory) => {
         return ['.jpeg', '.jpg', '.png'].includes(ext);
       })
       .map(file => path.join(directory, file));
-    
+
     return files;
   } catch (error) {
     console.error(`Error reading directory ${directory}:`, error);
@@ -67,32 +67,32 @@ const randomDelay = (min = 500, max = 1500) => {
  */
 const searchImages = async (prompt) => {
   console.log(`[ImageSearch] Searching for: "${prompt}"`);
-  
+
   // Simulate small network delay
   await randomDelay();
-  
+
   // Detect prompt type
   const promptType = detectPromptType(prompt);
   const directory = IMAGE_DIRECTORIES[promptType];
-  
+
   console.log(`[ImageSearch] Using directory: ${directory}`);
   console.log(`[ImageSearch] Prompt type: ${promptType}`);
-  
+
   // Get all image files from the directory
   const imageFiles = getImageFiles(directory);
-  
+
   if (imageFiles.length === 0) {
     throw new Error(`No images found in directory: ${directory}`);
   }
-  
+
   // Select up to 30 images (or all if less than 30)
   const selectedImages = imageFiles.slice(0, 30);
-  
+
   // Map files to image objects with accessible paths
   const images = selectedImages.map((filePath, index) => {
     const styles = IMAGE_STYLES[promptType] || ['modern'];
     const randomStyle = styles[Math.floor(Math.random() * styles.length)];
-    
+
     return {
       url: filePath, // Will be served as static file
       style: randomStyle,
@@ -105,9 +105,9 @@ const searchImages = async (prompt) => {
       }
     };
   });
-  
+
   console.log(`[ImageSearch] Found ${images.length} reference images`);
-  
+
   return images;
 };
 

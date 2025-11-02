@@ -42,17 +42,16 @@ app.get('/api/status/:jobId', pipelineController.getStatus);
 // Serve uploaded files
 app.use('/uploads', express.static('uploads'));
 
-// Serve local training images
+// Serve local training images from backend
 app.get('/images/*', (req, res) => {
-  // Extract the file path from the request
-  const filePath = decodeURIComponent(req.params[0]);
-  
-  // Security check: ensure the path is within the Training Images directory
-  if (!filePath.includes('/Training Images/')) {
+  const backendTrainingImages = path.join(__dirname, 'TrainingImages');
+  const filePath = path.join(backendTrainingImages, decodeURIComponent(req.params[0]));
+
+  // Security check: ensure path resolves within TrainingImages
+  if (!filePath.startsWith(backendTrainingImages)) {
     return res.status(403).json({ error: 'Access denied' });
   }
-  
-  // Check if file exists
+
   if (fs.existsSync(filePath)) {
     res.sendFile(path.resolve(filePath));
   } else {
