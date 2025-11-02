@@ -377,6 +377,7 @@
   }
 }
 
+/* Mobile Styles (768px and below) */
 @media (max-width: 768px) {
   .result-grid {
     grid-template-columns: 1fr;
@@ -384,19 +385,96 @@
     padding: 1rem;
   }
 
-  .header-nav {
-    gap: 0.5rem;
+  /* Header Navigation - Mobile */
+  .result-header.mobile {
+    padding: 1rem 0.5rem;
+    margin-top: 0.5rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
-  .nav-item {
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
+  .header-nav.mobile {
+    gap: 0.4rem;
+    padding: 0 0.5rem;
+    flex-wrap: nowrap;
+    min-width: max-content;
   }
 
-  .footer-left,
-  .footer-right {
-    gap: 1rem;
+  .nav-item.mobile {
+    padding: 0.4rem 0.8rem;
     font-size: 0.8rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .nav-item.mobile .nav-name {
+    display: none; /* Hide category names on mobile, show only numbers */
+  }
+
+  /* Footer Dock - Mobile */
+  .result-footer.mobile {
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1.5rem 1rem;
+    min-width: auto;
+    max-width: 95vw;
+    width: 95vw;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 1rem;
+  }
+
+  .result-footer.mobile .footer-left {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .result-footer.mobile .footer-middle {
+    width: 100%;
+    min-width: auto;
+    padding: 0 0.5rem;
+  }
+
+  .result-footer.mobile .footer-right {
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .result-footer.mobile .footer-icons-container {
+    justify-content: center;
+    gap: 1.5rem;
+    width: 100%;
+  }
+
+  .result-footer.mobile .footer-generate-btn {
+    width: 100%;
+    margin-left: 0;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+  }
+
+  .result-footer.mobile .footer-info {
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .result-footer.mobile .prompt-input {
+    width: 100%;
+    min-width: auto;
+  }
+
+  /* Grid adjustments for mobile */
+  .result-grid-column {
+    gap: 1rem;
+  }
+
+  .grid-card {
+    border-radius: 4px;
   }
 }
 

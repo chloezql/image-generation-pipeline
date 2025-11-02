@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './MainResult.css';
 import ImageZoomOverlay from './ImageZoomOverlay';
+import MainResultCategoriesMobile from './MainResultCategoriesMobile';
+import MainResultFooterMobile from './MainResultFooterMobile';
 
 const MainResult = ({ images, onBack, userInputs, onRegenerate }) => {
   const [selectedCategory, setSelectedCategory] = useState(0);
@@ -8,6 +10,15 @@ const MainResult = ({ images, onBack, userInputs, onRegenerate }) => {
   const [hoveredIcon, setHoveredIcon] = useState(null);
   const [loadedImages, setLoadedImages] = useState(new Set());
   const [zoomImageUrl, setZoomImageUrl] = useState(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const categories = [
     { id: '001', name: 'Name Kura', active: true },
@@ -132,20 +143,28 @@ const MainResult = ({ images, onBack, userInputs, onRegenerate }) => {
       </div>
 
       {/* Header Navigation */}
-      <div className="result-header">
-        <div className="header-nav">
-          {categories.map((category, index) => (
-            <div
-              key={category.id}
-              className={`nav-item ${category.active ? 'active' : ''}`}
-              onClick={() => setSelectedCategory(index)}
-            >
-              <span className="nav-number">{category.id}</span>
-              {category.name && <span className="nav-name">{category.name}</span>}
-            </div>
-          ))}
+      {isMobile ? (
+        <MainResultCategoriesMobile
+          categories={categories}
+          selectedCategory={selectedCategory}
+          onCategorySelect={setSelectedCategory}
+        />
+      ) : (
+        <div className="result-header">
+          <div className="header-nav">
+            {categories.map((category, index) => (
+              <div
+                key={category.id}
+                className={`nav-item ${category.active ? 'active' : ''}`}
+                onClick={() => setSelectedCategory(index)}
+              >
+                <span className="nav-number">{category.id}</span>
+                {category.name && <span className="nav-name">{category.name}</span>}
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Main Grid with Masonry Layout */}
       <div className="result-grid">
@@ -183,124 +202,142 @@ const MainResult = ({ images, onBack, userInputs, onRegenerate }) => {
       )}
 
       {/* Footer Dock */}
-      <div className="result-footer">
-        <div className="footer-left">
-          {/* Logo */}
-          <div className="footer-item-large" onClick={handleLogoUpload}>
-            <div className="footer-thumbnail-container">
-              {userData.logo ? (
-                <img
-                  src={URL.createObjectURL(userData.logo)}
-                  alt="Logo"
-                  className="footer-thumbnail"
-                />
-              ) : (
-                <div className="footer-placeholder">LOGO</div>
-              )}
-            </div>
-            <span className="footer-label">LOGO</span>
-          </div>
-
-          {/* AESTHETIC */}
-          <div className="footer-item-large" onClick={handleAestheticUpload}>
-            <div className="footer-thumbnails-row">
-              {userData.aestheticImages && userData.aestheticImages.length > 0 ? (
-                userData.aestheticImages.slice(0, 3).map((img, idx) => (
+      {isMobile ? (
+        <MainResultFooterMobile
+          userData={userData}
+          icons={icons}
+          selectedIcon={selectedIcon}
+          selectedContent={selectedContent}
+          editablePrompt={editablePrompt}
+          setEditablePrompt={setEditablePrompt}
+          onIconClick={handleIconClick}
+          onGenerate={handleGenerate}
+          onLogoUpload={handleLogoUpload}
+          onAestheticUpload={handleAestheticUpload}
+          onNeedUpload={handleNeedUpload}
+          hoveredIcon={hoveredIcon}
+          setHoveredIcon={setHoveredIcon}
+        />
+      ) : (
+        <div className="result-footer">
+          <div className="footer-left">
+            {/* Logo */}
+            <div className="footer-item-large" onClick={handleLogoUpload}>
+              <div className="footer-thumbnail-container">
+                {userData.logo ? (
                   <img
-                    key={idx}
-                    src={URL.createObjectURL(img)}
-                    alt={`Aesthetic ${idx}`}
-                    className="footer-thumbnail-small"
-                    style={{ transform: `rotate(${idx * 5}deg)` }}
+                    src={URL.createObjectURL(userData.logo)}
+                    alt="Logo"
+                    className="footer-thumbnail"
                   />
-                ))
-              ) : (
-                <div className="footer-placeholder">AESTHETIC</div>
-              )}
-            </div>
-            <span className="footer-label">AESTHETIC</span>
-          </div>
-
-          {/* NEED */}
-          <div className="footer-item-large" onClick={handleNeedUpload}>
-            <div className="footer-thumbnails-row">
-              {userData.referenceImages && userData.referenceImages.length > 0 ? (
-                userData.referenceImages.slice(0, 2).map((img, idx) => (
-                  <img
-                    key={idx}
-                    src={URL.createObjectURL(img)}
-                    alt={`Reference ${idx}`}
-                    className="footer-thumbnail-small"
-                    style={{ transform: `rotate(${idx * -5}deg)` }}
-                  />
-                ))
-              ) : (
-                <div className="footer-placeholder">NEED</div>
-              )}
-            </div>
-            <span className="footer-label">NEED</span>
-          </div>
-        </div>
-
-        {/* Middle: Selected content */}
-        <div className="footer-middle">
-          {selectedContent && selectedContent.id === 'search' ? (
-            <div className="footer-info">
-              <span className="footer-info-label">{selectedContent.label}</span>
-              <input
-                type="text"
-                value={editablePrompt}
-                onChange={(e) => setEditablePrompt(e.target.value)}
-                className="prompt-input"
-              />
-            </div>
-          ) : selectedContent && selectedContent.id === 'color' && userData.colors && userData.colors.length > 0 ? (
-            <div className="footer-info">
-              <span className="footer-info-label">{selectedContent.label}</span>
-              <div className="color-dots">
-                {userData.colors.map((color, idx) => (
-                  <span key={idx} className="dot" style={{ background: color }}></span>
-                ))}
-              </div>
-            </div>
-          ) : selectedContent ? (
-            <div className="footer-info">
-              <span className="footer-info-label">{selectedContent.label}</span>
-              <span className="footer-info-value">{selectedContent.value}</span>
-            </div>
-          ) : null}
-        </div>
-
-        {/* Right: Icons and Generate button */}
-        <div className="footer-right">
-          <div className="footer-icons-container">
-            {icons.map((icon, index) => (
-              <div
-                key={icon.id}
-                className={`footer-icon-wrapper ${selectedIcon === index ? 'active' : ''}`}
-                onMouseEnter={() => setHoveredIcon(index)}
-                onMouseLeave={() => setHoveredIcon(null)}
-                onClick={() => handleIconClick(icon)}
-              >
-                <img
-                  src={icon.icon}
-                  alt={icon.tooltip}
-                  className="footer-icon-img"
-                />
-                {selectedIcon === index && (
-                  <div className="icon-dot"></div>
-                )}
-                {hoveredIcon === index && (
-                  <div className="icon-tooltip">{icon.tooltip}</div>
+                ) : (
+                  <div className="footer-placeholder">LOGO</div>
                 )}
               </div>
-            ))}
+              <span className="footer-label">LOGO</span>
+            </div>
+
+            {/* AESTHETIC */}
+            <div className="footer-item-large" onClick={handleAestheticUpload}>
+              <div className="footer-thumbnails-row">
+                {userData.aestheticImages && userData.aestheticImages.length > 0 ? (
+                  userData.aestheticImages.slice(0, 3).map((img, idx) => (
+                    <img
+                      key={idx}
+                      src={URL.createObjectURL(img)}
+                      alt={`Aesthetic ${idx}`}
+                      className="footer-thumbnail-small"
+                      style={{ transform: `rotate(${idx * 5}deg)` }}
+                    />
+                  ))
+                ) : (
+                  <div className="footer-placeholder">AESTHETIC</div>
+                )}
+              </div>
+              <span className="footer-label">AESTHETIC</span>
+            </div>
+
+            {/* NEED */}
+            <div className="footer-item-large" onClick={handleNeedUpload}>
+              <div className="footer-thumbnails-row">
+                {userData.referenceImages && userData.referenceImages.length > 0 ? (
+                  userData.referenceImages.slice(0, 2).map((img, idx) => (
+                    <img
+                      key={idx}
+                      src={URL.createObjectURL(img)}
+                      alt={`Reference ${idx}`}
+                      className="footer-thumbnail-small"
+                      style={{ transform: `rotate(${idx * -5}deg)` }}
+                    />
+                  ))
+                ) : (
+                  <div className="footer-placeholder">NEED</div>
+                )}
+              </div>
+              <span className="footer-label">NEED</span>
+            </div>
           </div>
-          <button className="footer-generate-btn" onClick={handleGenerate}>
-            Generate
-          </button>
+
+          {/* Middle: Selected content */}
+          <div className="footer-middle">
+            {selectedContent && selectedContent.id === 'search' ? (
+              <div className="footer-info">
+                <span className="footer-info-label">{selectedContent.label}</span>
+                <input
+                  type="text"
+                  value={editablePrompt}
+                  onChange={(e) => setEditablePrompt(e.target.value)}
+                  className="prompt-input"
+                />
+              </div>
+            ) : selectedContent && selectedContent.id === 'color' && userData.colors && userData.colors.length > 0 ? (
+              <div className="footer-info">
+                <span className="footer-info-label">{selectedContent.label}</span>
+                <div className="color-dots">
+                  {userData.colors.map((color, idx) => (
+                    <span key={idx} className="dot" style={{ background: color }}></span>
+                  ))}
+                </div>
+              </div>
+            ) : selectedContent ? (
+              <div className="footer-info">
+                <span className="footer-info-label">{selectedContent.label}</span>
+                <span className="footer-info-value">{selectedContent.value}</span>
+              </div>
+            ) : null}
+          </div>
+
+          {/* Right: Icons and Generate button */}
+          <div className="footer-right">
+            <div className="footer-icons-container">
+              {icons.map((icon, index) => (
+                <div
+                  key={icon.id}
+                  className={`footer-icon-wrapper ${selectedIcon === index ? 'active' : ''}`}
+                  onMouseEnter={() => setHoveredIcon(index)}
+                  onMouseLeave={() => setHoveredIcon(null)}
+                  onClick={() => handleIconClick(icon)}
+                >
+                  <img
+                    src={icon.icon}
+                    alt={icon.tooltip}
+                    className="footer-icon-img"
+                  />
+                  {selectedIcon === index && (
+                    <div className="icon-dot"></div>
+                  )}
+                  {hoveredIcon === index && (
+                    <div className="icon-tooltip">{icon.tooltip}</div>
+                  )}
+                </div>
+              ))}
+            </div>
+            <button className="footer-generate-btn" onClick={handleGenerate}>
+              Generate
+            </button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
