@@ -5,6 +5,7 @@ A full-stack application that orchestrates multiple APIs to create personalized 
 ## 🎯 System Overview
 
 This application demonstrates:
+
 - **API Integration**: Orchestration of multiple external APIs with proper error handling
 - **Async Processing**: Concurrent execution of 30 image generations
 - **Prompt Engineering**: Dynamic construction of AI prompts from brand assets
@@ -61,7 +62,7 @@ image-generation-pipeline/
 
 ### Prerequisites
 
-- Node.js 16+ 
+- Node.js 16+
 - npm or yarn
 
 ### Installation & Running
@@ -101,6 +102,7 @@ The frontend will run on `http://localhost:3000`
 ## 🔧 API Endpoints
 
 ### Generate Images
+
 ```
 POST /api/generate
 Content-Type: multipart/form-data
@@ -119,6 +121,7 @@ Response:
 ```
 
 ### Get Job Status
+
 ```
 GET /api/status/:jobId
 
@@ -134,6 +137,7 @@ Response:
 ```
 
 ### Health Check
+
 ```
 GET /health
 
@@ -149,11 +153,13 @@ Response:
 The system includes realistic mock services that simulate real API behavior:
 
 ### Image Search Service
+
 - **Delay**: 0.8-2 seconds
 - **Failure Rate**: 10%
 - **Response**: 30 reference images with styles
 
 ### AI Generation Service
+
 - **Delay**: 1.5-3.5 seconds per image
 - **Failure Rate**: 15%
 - **Retries**: Up to 3 attempts
@@ -162,6 +168,7 @@ The system includes realistic mock services that simulate real API behavior:
 ## 🎨 Features
 
 ### API Integration (40% weight)
+
 - ✅ Efficient API orchestration with proper flow control
 - ✅ Robust error handling and retry logic
 - ✅ Concurrent processing with batch management
@@ -169,6 +176,7 @@ The system includes realistic mock services that simulate real API behavior:
 - ✅ Graceful partial result handling
 
 ### System Design (35% weight)
+
 - ✅ Clean architecture with separation of concerns
 - ✅ Scalable prompt engineering approach
 - ✅ Job tracking and status management
@@ -176,6 +184,7 @@ The system includes realistic mock services that simulate real API behavior:
 - ✅ Resource optimization
 
 ### Code Quality (25% weight)
+
 - ✅ Clean, maintainable code structure
 - ✅ Comprehensive error handling
 - ✅ Clear documentation
@@ -184,23 +193,27 @@ The system includes realistic mock services that simulate real API behavior:
 ## 🛠️ Design Decisions
 
 ### Async Processing
+
 - Uses `Promise.all()` for concurrent batch processing
 - Processes images in batches of 5 to avoid overwhelming the system
 - Implements polling mechanism for real-time status updates
 
 ### Error Handling
+
 - Graceful failures with partial results
 - Retry logic for transient errors
 - Clear error messages for users
 - Job tracking for debugging
 
 ### Prompt Engineering
+
 - Extracts colors and fonts from brand assets
 - Analyzes reference images for style patterns
 - Constructs contextual prompts with brand elements
 - Creates variations for diversity
 
 ### User Experience
+
 - Immediate response with job ID
 - Real-time progress updates
 - Visual feedback during processing
@@ -208,28 +221,21 @@ The system includes realistic mock services that simulate real API behavior:
 
 ## 📊 Evaluation Criteria Met
 
-| Criteria | Implementation |
-|----------|----------------|
-| API Integration | Mock services with realistic delays and failures |
-| Async Processing | Batch concurrent processing with status tracking |
-| Error Management | Retry logic, graceful failures, partial results |
-| Prompt Engineering | Dynamic construction from brand assets |
-| System Architecture | Clean separation, scalable design |
-| Frontend Integration | Responsive grid with progress indicators |
-
-## 🧪 Testing
-
-The system is designed to be testable with:
-- Mock services that can be easily replaced
-- Clear service boundaries
-- Error injection for testing failure scenarios
-- Deterministic responses for testing
+| Criteria             | Implementation                                   |
+| -------------------- | ------------------------------------------------ |
+| API Integration      | Mock services with realistic delays and failures |
+| Async Processing     | Batch concurrent processing with status tracking |
+| Error Management     | Retry logic, graceful failures, partial results  |
+| Prompt Engineering   | Dynamic construction from brand assets           |
+| System Architecture  | Clean separation, scalable design                |
+| Frontend Integration | Responsive grid with progress indicators         |
 
 ## 📝 Configuration
 
 ### Backend Environment Variables
 
 Create `.env` file in `backend/` directory:
+
 ```env
 PORT=3001
 NODE_ENV=development
@@ -238,12 +244,14 @@ NODE_ENV=development
 ### Mock Behavior
 
 Adjust failure rates and delays in service files:
+
 - `services/imageSearchService.js`: Adjust `FAILURE_RATE` (default 0.1)
 - `services/aiGenerationService.js`: Adjust `FAILURE_RATE` (default 0.15)
 
 ## 🔒 Security Considerations
 
 For production use:
+
 - Add authentication middleware
 - Implement rate limiting per user
 - Add API key management for external services
@@ -256,11 +264,13 @@ For production use:
 The system is ready for deployment:
 
 **Backend**:
+
 - Can be deployed to Heroku, Railway, or AWS
 - No database required (uses in-memory storage for demo)
 - Production: Use Redis for job tracking
 
 **Frontend**:
+
 - Build with `npm run build`
 - Serve static files or deploy to Vercel/Netlify
 - Update API URL in production
