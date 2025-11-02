@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './MainResult.css';
+import ImageZoomOverlay from './ImageZoomOverlay';
 
 const MainResult = ({ images, onBack, userInputs, onRegenerate }) => {
   const [selectedCategory, setSelectedCategory] = useState(0);
   const [selectedIcon, setSelectedIcon] = useState(1); // font-icon is selected by default
   const [hoveredIcon, setHoveredIcon] = useState(null);
   const [loadedImages, setLoadedImages] = useState(new Set());
+  const [zoomImageUrl, setZoomImageUrl] = useState(null);
 
   const categories = [
     { id: '001', name: 'Name Kura', active: true },
@@ -64,23 +66,23 @@ const MainResult = ({ images, onBack, userInputs, onRegenerate }) => {
     const colIndex = index % 3; // Position in row (0, 1, 2)
     // Shift the ratio based on row and column for variety
     const ratioType = (rowIndex + colIndex) % 3;
-    
+
     let aspectRatio;
-    
-    switch(ratioType) {
-      case 0: 
+
+    switch (ratioType) {
+      case 0:
         aspectRatio = '362/180'; // Wide landscape (2:1)
         break;
-      case 1: 
+      case 1:
         aspectRatio = '357/301'; // Portrait (1.19:1)
         break;
-      case 2: 
+      case 2:
         aspectRatio = '313/301'; // Almost square (1.04:1)
         break;
-      default: 
+      default:
         aspectRatio = '4/3';
     }
-    
+
     return {
       ...img,
       aspectRatio
@@ -157,12 +159,16 @@ const MainResult = ({ images, onBack, userInputs, onRegenerate }) => {
               const columnToRender = index % 3;
               if (columnToRender === colIndex) {
                 return (
-                  <div 
-                    key={index} 
+                  <div
+                    key={index}
                     className={`grid-card ${loadedImages.has(index) ? 'loaded' : ''}`}
                     style={{ aspectRatio: image.aspectRatio }}
                   >
-                    <img src={image.url} alt={`Result ${index}`} />
+                    <img
+                      src={image.url}
+                      alt={`Result ${index}`}
+                      onClick={() => setZoomImageUrl(image.url)}
+                    />
                   </div>
                 );
               }
@@ -172,6 +178,10 @@ const MainResult = ({ images, onBack, userInputs, onRegenerate }) => {
         ))}
       </div>
 
+      {zoomImageUrl && (
+        <ImageZoomOverlay imageUrl={zoomImageUrl} onClose={() => setZoomImageUrl(null)} />
+      )}
+
       {/* Footer Dock */}
       <div className="result-footer">
         <div className="footer-left">
@@ -179,9 +189,9 @@ const MainResult = ({ images, onBack, userInputs, onRegenerate }) => {
           <div className="footer-item-large" onClick={handleLogoUpload}>
             <div className="footer-thumbnail-container">
               {userData.logo ? (
-                <img 
-                  src={URL.createObjectURL(userData.logo)} 
-                  alt="Logo" 
+                <img
+                  src={URL.createObjectURL(userData.logo)}
+                  alt="Logo"
                   className="footer-thumbnail"
                 />
               ) : (
@@ -196,9 +206,9 @@ const MainResult = ({ images, onBack, userInputs, onRegenerate }) => {
             <div className="footer-thumbnails-row">
               {userData.aestheticImages && userData.aestheticImages.length > 0 ? (
                 userData.aestheticImages.slice(0, 3).map((img, idx) => (
-                  <img 
+                  <img
                     key={idx}
-                    src={URL.createObjectURL(img)} 
+                    src={URL.createObjectURL(img)}
                     alt={`Aesthetic ${idx}`}
                     className="footer-thumbnail-small"
                     style={{ transform: `rotate(${idx * 5}deg)` }}
@@ -216,9 +226,9 @@ const MainResult = ({ images, onBack, userInputs, onRegenerate }) => {
             <div className="footer-thumbnails-row">
               {userData.referenceImages && userData.referenceImages.length > 0 ? (
                 userData.referenceImages.slice(0, 2).map((img, idx) => (
-                  <img 
+                  <img
                     key={idx}
-                    src={URL.createObjectURL(img)} 
+                    src={URL.createObjectURL(img)}
                     alt={`Reference ${idx}`}
                     className="footer-thumbnail-small"
                     style={{ transform: `rotate(${idx * -5}deg)` }}
@@ -231,7 +241,7 @@ const MainResult = ({ images, onBack, userInputs, onRegenerate }) => {
             <span className="footer-label">NEED</span>
           </div>
         </div>
-        
+
         {/* Middle: Selected content */}
         <div className="footer-middle">
           {selectedContent && selectedContent.id === 'search' ? (
@@ -260,7 +270,7 @@ const MainResult = ({ images, onBack, userInputs, onRegenerate }) => {
             </div>
           ) : null}
         </div>
-        
+
         {/* Right: Icons and Generate button */}
         <div className="footer-right">
           <div className="footer-icons-container">
@@ -272,8 +282,8 @@ const MainResult = ({ images, onBack, userInputs, onRegenerate }) => {
                 onMouseLeave={() => setHoveredIcon(null)}
                 onClick={() => handleIconClick(icon)}
               >
-                <img 
-                  src={icon.icon} 
+                <img
+                  src={icon.icon}
                   alt={icon.tooltip}
                   className="footer-icon-img"
                 />
