@@ -437,7 +437,7 @@ export default function ImageZoomOverlay({ imageUrl, onClose }) {
                         </div>
                     </div>
                 </div>
-                <div style={infoPanelStyle}>
+                <div style={infoPanelStyle} onClick={onClose}>
                     <div style={{ display: 'flex', alignItems: 'center', marginBottom: 32 }}>
                         <div style={roundIndicatorStyle} />
                         <span style={userNameStyle}>Name 111</span>
