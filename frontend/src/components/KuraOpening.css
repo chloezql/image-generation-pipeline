@@ -1,0 +1,103 @@
+.kura-opening-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9998; /* Slightly lower than hey-opening */
+  opacity: 0;
+  overflow: hidden;
+}
+
+.kura-opening-overlay.animate-in {
+  animation: none; /* Instant show, no fade in since we're continuing from hey-opening */
+  opacity: 1;
+}
+
+.kura-opening-overlay.animate-out {
+  animation: fadeOutKura 0.5s ease-in forwards;
+}
+
+/* Grid pattern background */
+.kura-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(#82CD59 1px, transparent 1px),
+    linear-gradient(90deg, #82CD59 1px, transparent 1px);
+  background-size: 50px 50px;
+  opacity: 0;
+  pointer-events: none;
+  animation: fadeInGrid 1s ease-out 0.5s forwards;
+}
+
+@keyframes fadeInGrid {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.3;
+  }
+}
+
+/* Container for letters */
+.kura-letters {
+  display: flex;
+  align-items: center;
+  gap: 100px; /* Even more spacing between letters */
+  position: relative;
+  z-index: 1;
+}
+
+/* Individual letter styling */
+.kura-letter {
+  width: 150px;
+  height: auto;
+  opacity: 0;
+  transform: translateX(200px) rotate(-90deg);
+  transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1); /* Slower animation */
+}
+
+.kura-letter.animate-letter {
+  opacity: 1;
+  transform: translateX(0) rotate(0deg);
+  transition-delay: var(--delay);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .kura-letter {
+    width: 100px;
+  }
+  
+  .kura-letters {
+    gap: 60px; /* Increased spacing for mobile too */
+  }
+}
+
+/* Fade in animation */
+@keyframes fadeInKura {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Fade out animation */
+@keyframes fadeOutKura {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

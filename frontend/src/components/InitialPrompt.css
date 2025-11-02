@@ -1,0 +1,368 @@
+.initial-prompt-container {
+  min-height: 100vh;
+  background-color: #000000;
+  color: white;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Center content block */
+.prompt-lines-wrapper {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto; /* Center horizontally */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 4rem 2rem;
+  box-sizing: border-box;
+}
+
+.prompt-lines {
+  width: 100%;
+}
+
+.initial-prompt-header {
+  position: absolute;
+  top: 3rem;
+  left: 3rem;
+  width: auto;
+  z-index: 100;
+}
+
+.kura-logo {
+  height: 80px;
+  width: auto;
+}
+
+
+.prompt-line {
+  padding: 1.5rem 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+  line-height: 1.2;
+  margin-left: 0;
+  width: 100%;
+}
+
+.prompt-line::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: #82CD59;
+  z-index: 1;
+}
+
+.prompt-line.active {
+  opacity: 1;
+}
+
+.prompt-line.inactive {
+  opacity: 0.3;
+}
+
+.prompt-line.skipped {
+  opacity: 0.4;
+}
+
+.prompt-line:hover.inactive,
+.prompt-line:hover.skipped {
+  opacity: 0.6;
+}
+
+.prompt-text {
+  font-size: 2rem;
+  color: white;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+
+.clickable-text {
+  color: rgba(255, 255, 255, 0.6);
+  font-style: italic;
+  margin-left: 0.5rem;
+}
+
+.image-previews {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-left: 2rem;
+}
+
+.image-preview {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.image-preview img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+  margin-left: -15px; /* Overlapping effect */
+}
+
+.image-preview:first-child img {
+  margin-left: 0;
+}
+
+
+
+.file-input {
+  display: none;
+}
+
+.clickable-text {
+  cursor: pointer;
+  transition: color 0.2s;
+  font-style: italic;
+}
+
+.clickable-text:hover {
+  color: #82CD59;
+}
+
+label[for^="file-input"] {
+  display: inline;
+  cursor: pointer;
+}
+
+/* Dropdown */
+.dropdown-trigger {
+  margin-left: 2rem;
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.6);
+  font-style: italic;
+  display: inline-block;
+  min-width: 150px;
+  font-size: 1.5rem;
+}
+
+.dropdown-menu {
+  margin-top: 0.5rem;
+  background: rgba(20, 20, 20, 0.95);
+  border: 1px solid rgba(130, 205, 89, 0.5);
+  border-radius: 4px;
+  padding: 0.5rem;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  min-width: 150px;
+}
+
+.dropdown-item {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  color: white;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.dropdown-item:hover {
+  background: rgba(130, 205, 89, 0.2);
+}
+
+/* Color Picker */
+.color-picker-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: 2rem;
+}
+
+.color-swatch {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.color-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.remove-color {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: rgba(255, 0, 0, 0.8);
+  border: 2px solid #000;
+  color: white;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.color-input-hidden {
+  display: none;
+}
+
+.add-color-btn-trigger {
+  display: inline-block;
+  width: 36px;
+  height: 36px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 22px;
+  cursor: pointer;
+  transition: all 0.2s;
+  line-height: 1;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
+.add-color-btn-trigger:hover {
+  border-color: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.add-color-btn {
+  width: 36px;
+  height: 36px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  line-height: 1;
+}
+
+.add-color-btn:hover {
+  border-color: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+/* Text Input */
+.text-input {
+  margin-left: 2rem;
+  min-width: 250px;
+  max-width: 350px;
+  padding: 0.5rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.6);
+  font-style: italic;
+  font-size: 1.5rem;
+}
+
+.text-input:focus {
+  outline: none;
+  border-color: #82CD59;
+  color: white;
+}
+
+.text-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+  font-style: italic;
+}
+
+/* Footer Buttons */
+.prompt-footer {
+  width: 100%;
+  max-width: 900px;
+  margin: 2rem auto 0; /* Center horizontally */
+  display: flex;
+  justify-content: center;
+  position: relative;
+  padding: 0 2rem;
+  box-sizing: border-box;
+}
+
+.next-button {
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.5rem;
+  font-style: italic;
+  font-weight: normal;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.next-button:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.generate-button {
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  font-style: italic;
+  font-weight: normal;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.generate-button:hover:not(:disabled) {
+  opacity: 0.8;
+}
+
+.generate-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .initial-prompt-container {
+    padding: 2rem 1rem;
+  }
+
+  .prompt-text {
+    font-size: 1rem;
+  }
+
+  .image-preview img {
+    width: 80px;
+    height: 80px;
+  }
+}
