@@ -21,25 +21,44 @@ const MainResult = ({ images, onBack, userInputs, onRegenerate }) => {
   }, []);
 
   const categories = [
-    { id: '001', name: 'Name Kura', active: true },
-    { id: '002', name: '', active: false },
-    { id: '003', name: '', active: false },
-    { id: '004', name: '', active: false },
-    { id: '005', name: '', active: false },
-    { id: '006', name: '', active: false },
+    { id: '001', name: 'Product', active: true },
+    { id: '002', name: 'Service', active: false },
+    { id: '003', name: 'App', active: false },
+    { id: '004', name: 'Website', active: false },
+    { id: '005', name: 'Mobile', active: false },
+    { id: '006', name: 'Portfolio', active: false },
+    { id: '007', name: 'Event', active: false },
   ];
 
-  // Get user inputs for the dock
-  const userData = userInputs || {
-    logo: null,
-    referenceImages: [],
-    aestheticImages: [],
+  // Default preset values (matching InitialPrompt)
+  const defaultPresets = {
+    logo: '/logo-placeholder.png',
+    referenceImages: ['/ref1.png', '/ref2.png', '/ref3.png'],
+    aestheticImages: [
+      '/TrainingImages/InteriorDesign/1.jpeg',
+      '/TrainingImages/InteriorDesign/2.jpeg'
+    ],
+    font: 'Roboto',
+    colors: ['#72da58', '#143b28', '#233f5e'],
+    textPrompt: 'landing pages ideas'
+  };
+
+  // Get user inputs for the dock, merging with defaults
+  const userData = userInputs ? {
+    logo: userInputs.logo || defaultPresets.logo,
+    referenceImages: userInputs.referenceImages?.length > 0 ? userInputs.referenceImages : defaultPresets.referenceImages,
+    aestheticImages: userInputs.aestheticImages?.length > 0 ? userInputs.aestheticImages : defaultPresets.aestheticImages,
+    uploads: images?.length || 0,
+    aesthetic: userInputs.aesthetic || '',
+    need: userInputs.need || '',
+    font: userInputs.font || defaultPresets.font,
+    colors: userInputs.colors?.length > 0 ? userInputs.colors : defaultPresets.colors,
+    textPrompt: userInputs.textPrompt || defaultPresets.textPrompt
+  } : {
+    ...defaultPresets,
     uploads: images?.length || 0,
     aesthetic: '',
-    need: '',
-    font: 'Roboto',
-    colors: [],
-    textPrompt: 'landing pages ideas'
+    need: ''
   };
 
   const [selectedContent, setSelectedContent] = useState(null);
@@ -158,8 +177,8 @@ const MainResult = ({ images, onBack, userInputs, onRegenerate }) => {
                 className={`nav-item ${category.active ? 'active' : ''}`}
                 onClick={() => setSelectedCategory(index)}
               >
-                <span className="nav-number">{category.id}</span>
-                {category.name && <span className="nav-name">{category.name}</span>}
+                {/* <span className="nav-number">{category.name}</span> */}
+                {category.name && <span className="nav-name">↗ {category.name}</span>}
               </div>
             ))}
           </div>
@@ -226,7 +245,7 @@ const MainResult = ({ images, onBack, userInputs, onRegenerate }) => {
               <div className="footer-thumbnail-container">
                 {userData.logo ? (
                   <img
-                    src={URL.createObjectURL(userData.logo)}
+                    src={typeof userData.logo === 'string' ? userData.logo : URL.createObjectURL(userData.logo)}
                     alt="Logo"
                     className="footer-thumbnail"
                   />
@@ -244,7 +263,7 @@ const MainResult = ({ images, onBack, userInputs, onRegenerate }) => {
                   userData.aestheticImages.slice(0, 3).map((img, idx) => (
                     <img
                       key={idx}
-                      src={URL.createObjectURL(img)}
+                      src={typeof img === 'string' ? img : URL.createObjectURL(img)}
                       alt={`Aesthetic ${idx}`}
                       className="footer-thumbnail-small"
                       style={{ transform: `rotate(${idx * 5}deg)` }}
@@ -264,7 +283,7 @@ const MainResult = ({ images, onBack, userInputs, onRegenerate }) => {
                   userData.referenceImages.slice(0, 2).map((img, idx) => (
                     <img
                       key={idx}
-                      src={URL.createObjectURL(img)}
+                      src={typeof img === 'string' ? img : URL.createObjectURL(img)}
                       alt={`Reference ${idx}`}
                       className="footer-thumbnail-small"
                       style={{ transform: `rotate(${idx * -5}deg)` }}

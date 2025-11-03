@@ -385,7 +385,7 @@ export default function ImageZoomOverlay({ imageUrl, onClose }) {
                                 <hr style={divider} />
                                 {/* Needs */}
                                 <div style={{ display: 'flex', alignItems: 'center', width: '100%', fontSize: '1.17rem', position: 'relative', marginBottom: 8 }}>
-                                    We need <span style={italicStyle}>[landing pages ideas]</span>
+                                    We need <span style={italicStyle}>[landing pages ideas] </span>
                                     <img alt="n" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?fit=crop&w=110&q=22" style={{ width: 63, borderRadius: 6, position: 'absolute', right: 7, top: -15, boxShadow: '2px 2px 16px #202', transform: 'rotate(7deg)' }} />
                                 </div>
                                 <hr style={divider} />

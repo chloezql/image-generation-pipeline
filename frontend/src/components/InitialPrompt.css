@@ -19,7 +19,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 4rem 2rem;
+  padding: 1rem 2rem;
   box-sizing: border-box;
 }
 
@@ -94,7 +94,7 @@
 
 
 .clickable-text {
-  color: rgba(255, 255, 255, 0.6);
+  color: #82CD59;
   font-style: italic;
   margin-left: 0.5rem;
 }

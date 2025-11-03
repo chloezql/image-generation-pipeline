@@ -107,23 +107,27 @@ function App() {
         formDataToSend.append('fonts', data.font);
       }
 
-      // Add logo if uploaded
-      if (data.logo) {
+      // Add logo if uploaded (only File objects, not URL strings)
+      if (data.logo && data.logo instanceof File) {
         formDataToSend.append('logo', data.logo);
       }
 
-      // Add reference images if uploaded
+      // Add reference images if uploaded (only File objects, not URL strings)
       if (data.referenceImages && data.referenceImages.length > 0) {
-        data.referenceImages.forEach((img, idx) => {
-          formDataToSend.append(`reference${idx}`, img);
-        });
+        data.referenceImages
+          .filter(img => img instanceof File)
+          .forEach((img, idx) => {
+            formDataToSend.append(`reference${idx}`, img);
+          });
       }
 
-      // Add aesthetic images if uploaded
+      // Add aesthetic images if uploaded (only File objects, not URL strings)
       if (data.aestheticImages && data.aestheticImages.length > 0) {
-        data.aestheticImages.forEach((img, idx) => {
-          formDataToSend.append(`aesthetic${idx}`, img);
-        });
+        data.aestheticImages
+          .filter(img => img instanceof File)
+          .forEach((img, idx) => {
+            formDataToSend.append(`aesthetic${idx}`, img);
+          });
       }
 
       const response = await axios.post(`${API_BASE_URL}/api/generate`, formDataToSend, {

@@ -11,7 +11,7 @@ export default function MainResultCategoriesMobile({ categories, selectedCategor
             className={`nav-item ${category.active ? 'active' : ''} mobile`}
             onClick={() => onCategorySelect(index)}
           >
-            <span className="nav-number">{category.id}</span>
+            {/* <span className="nav-number">{category.id}</span> */}
             {category.name && <span className="nav-name">{category.name}</span>}
           </div>
         ))}

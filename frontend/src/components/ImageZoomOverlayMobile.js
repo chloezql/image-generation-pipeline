@@ -292,6 +292,25 @@ const copyButton = {
     fontSize: '1.2rem',
 };
 
+const closeButtonStyle = {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    width: 40,
+    height: 40,
+    borderRadius: '50%',
+    background: 'rgba(0, 0, 0, 0.6)',
+    border: '1px solid rgba(255, 255, 255, 0.3)',
+    color: 'white',
+    fontSize: 24,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    cursor: 'pointer',
+    zIndex: 3001,
+    transition: 'all 0.2s',
+};
+
 export default function ImageZoomOverlayMobile({ imageUrl, onClose }) {
     const [flipped, setFlipped] = useState(false);
     const [showSharePopup, setShowSharePopup] = useState(false);
@@ -322,6 +341,24 @@ export default function ImageZoomOverlayMobile({ imageUrl, onClose }) {
 
     return (
         <div style={overlayStyle} onClick={onClose}>
+            <button
+                style={closeButtonStyle}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    onClose();
+                }}
+                title="Close"
+                onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'rgba(0, 0, 0, 0.8)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.5)';
+                }}
+                onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'rgba(0, 0, 0, 0.6)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                }}
+            >
+                ×
+            </button>
             <div style={containerStyle} onClick={stopPropagation}>
                 <div style={imageBoxStyle} onClick={() => setFlipped((f) => !f)}>
                     <div style={flipContainerStyle(flipped)}>

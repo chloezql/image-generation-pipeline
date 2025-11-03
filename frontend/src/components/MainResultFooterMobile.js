@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './MainResult.css';
 
-export default function MainResultFooterMobile({ 
-  userData, 
-  icons, 
-  selectedIcon, 
+export default function MainResultFooterMobile({
+  userData,
+  icons,
+  selectedIcon,
   selectedContent,
   editablePrompt,
   setEditablePrompt,
@@ -24,7 +24,7 @@ export default function MainResultFooterMobile({
           <div className="footer-thumbnail-container">
             {userData.logo ? (
               <img
-                src={URL.createObjectURL(userData.logo)}
+                src={typeof userData.logo === 'string' ? userData.logo : URL.createObjectURL(userData.logo)}
                 alt="Logo"
                 className="footer-thumbnail"
               />
@@ -42,7 +42,7 @@ export default function MainResultFooterMobile({
               userData.aestheticImages.slice(0, 3).map((img, idx) => (
                 <img
                   key={idx}
-                  src={URL.createObjectURL(img)}
+                  src={typeof img === 'string' ? img : URL.createObjectURL(img)}
                   alt={`Aesthetic ${idx}`}
                   className="footer-thumbnail-small"
                   style={{ transform: `rotate(${idx * 5}deg)` }}
@@ -62,7 +62,7 @@ export default function MainResultFooterMobile({
               userData.referenceImages.slice(0, 2).map((img, idx) => (
                 <img
                   key={idx}
-                  src={URL.createObjectURL(img)}
+                  src={typeof img === 'string' ? img : URL.createObjectURL(img)}
                   alt={`Reference ${idx}`}
                   className="footer-thumbnail-small"
                   style={{ transform: `rotate(${idx * -5}deg)` }}

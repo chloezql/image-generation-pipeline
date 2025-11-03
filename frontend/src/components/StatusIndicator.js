@@ -51,22 +51,32 @@ const StatusIndicator = ({ status }) => {
     return status.progress || 0;
   };
 
+  // Special case for searching status - show loading image with text below
+  if (status.status === 'searching') {
+    return (
+      <div className="status-indicator searching">
+        <img src="/loading.png" alt="Loading" className="loading-image" />
+        <p className="status-text-small">{getStatusMessage()}</p>
+      </div>
+    );
+  }
+
   return (
     <div className="status-indicator">
       <div className="status-header">
         <span className="status-icon">{getStatusIcon()}</span>
         <h3 className="status-title">{getStatusMessage()}</h3>
       </div>
-      
+
       {status.status !== 'completed' && status.status !== 'failed' && (
         <div className="progress-bar">
-          <div 
-            className="progress-fill" 
+          <div
+            className="progress-fill"
             style={{ width: `${getProgressPercentage()}%` }}
           />
         </div>
       )}
-      
+
       {status.errors && status.errors.length > 0 && (
         <div className="status-errors">
           {status.errors.map((error, index) => (
